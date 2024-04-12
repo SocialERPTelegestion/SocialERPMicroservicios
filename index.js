@@ -97,11 +97,14 @@ var storage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, './' + archivos);
     },
+
     filename: function (req, file, callback) {
         // callback(null, file.fieldname + '-' + Date.now());
-        callback(null, file.fieldname);
+        // callback(null, file.fieldname);
+        callback(null, file.originalname);
     }
 });
+
 var uploadf = multer({ storage: storage }).single('p12');//nombre del campo donde viene el archivo
 
 app.post('/api/firmabo', function (req, res, next) {
@@ -112,6 +115,16 @@ app.post('/api/firmabo', function (req, res, next) {
         proxy(req, res, next);
     });
 });
+
+app.post('/api/firmado', function (req, res, next) {
+    uploadf(req, res, function (err) {
+        if (err) {
+            return res.end("Error uploading file.");
+        }
+        proxy(req, res, next);
+    });
+});
+
 
 // app.post('/api/firma', function (req, res, next) {
 //     proxy(req, res, next);
