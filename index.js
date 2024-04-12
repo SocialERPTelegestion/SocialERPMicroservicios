@@ -86,6 +86,13 @@ app.get('/', proxy);
 app.use(express.json({ limit: '50mb' })) // for parsing application/json
 app.use(express.urlencoded({ limit: '50mb', extended: true })) // for parsing application/
 
+app.get('/api/test', function (req, res, next) {
+    // req.file es el `avatar` del archivo
+    res.status(200).json({ connected: { msg: '¡Connetado! v1.0' } });
+    // req.body tendrá los campos textuales, en caso de haber alguno.
+})
+
+
 app.post('/api/firma', function (req, res, next) {
     // req.file es el `avatar` del archivo
     proxy(req, res, next);
