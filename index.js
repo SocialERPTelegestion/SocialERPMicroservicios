@@ -117,12 +117,13 @@ app.post('/api/firmabo', function (req, res, next) {
 });
 
 app.post('/api/firmado', function (req, res, next) {
-    uploadf(req, res, function (err) {
-        if (err) {
-            return res.end("Error uploading file.");
-        }
-        proxy(req, res, next);
-    });
+    proxy(req, res, next);
+    // uploadf(req, res, function (err) {
+    //     if (err) {
+    //         return res.end("Error uploading file.");
+    //     }
+    //     proxy(req, res, next);
+    // });
 });
 
 
