@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const { proxy } = require('./lib/proxy');
-
+const { authenticateECF } = require('./lib/firma-xml/obtenertoken')
 var https = require('https')
 const app = express();
 const path = require('path');
@@ -112,6 +112,7 @@ var storage = multer.diskStorage({
     }
 });
 
+//En caso de que venga un archivo en multipart:
 var uploadf = multer({ storage: storage }).single('p12');//nombre del campo donde viene el archivo
 
 app.post('/api/firmabo', function (req, res, next) {
@@ -124,7 +125,11 @@ app.post('/api/firmabo', function (req, res, next) {
 });
 
 app.post('/api/firmado', function (req, res, next) {
+    if (!req.body) {
+        res.status(400).json('Body inexistente');
+    }
     proxy(req, res, next);
+    //En caso de que venga un archivo en multipart
     // uploadf(req, res, function (err) {
     //     if (err) {
     //         return res.end("Error uploading file.");
@@ -133,6 +138,10 @@ app.post('/api/firmado', function (req, res, next) {
     // });
 });
 
+
+app.get('/api/obtenertoken', function (req, res, next) {
+    proxy(req, res, next);
+})
 
 // app.post('/api/firma', function (req, res, next) {
 //     proxy(req, res, next);
@@ -152,9 +161,7 @@ app.use(function (error, req, res, next) {
         console.log('[index] ' + error.message);
     }
     // res.status(400).json({error: {msg: error.message, stack: error.stack}});
-
 });
-
 
 app.listen(port, () => console.info(`server started on port ${port} at: http://${host}:${port}`));
 
