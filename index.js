@@ -88,7 +88,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true })) // for parsing ap
 
 app.get('/api/test', function (req, res, next) {
     // req.file es el `avatar` del archivo
-    res.status(200).json({ connected: { msg: '¡Connetado! v1.0' } });
+    res.status(200).json({ msg: { estado: '¡Connetado! v1.0' } });
     // req.body tendrá los campos textuales, en caso de haber alguno.
 })
 
@@ -118,16 +118,15 @@ var uploadf = multer({ storage: storage }).single('p12');//nombre del campo dond
 app.post('/api/firmabo', function (req, res, next) {
     uploadf(req, res, function (err) {
         if (err) {
-            return res.end("Error uploading file.");
+            // return res.end("Error uploading file.");
+            return res.status(400).json({ msg: { error: 'Error uploading file (multer)!' } });
         }
         proxy(req, res, next);
     });
 });
 
 app.post('/api/firmado', function (req, res, next) {
-    if (!req.body) {
-        res.status(400).json('Body inexistente');
-    }
+
     proxy(req, res, next);
     //En caso de que venga un archivo en multipart
     // uploadf(req, res, function (err) {
