@@ -138,7 +138,7 @@ app.post('/api/firmado', function (req, res, next) {
 });
 
 
-app.get('/api/obtenertoken', function (req, res, next) {
+app.post('/api/obtenertoken', function (req, res, next) {
     proxy(req, res, next);
 })
 
