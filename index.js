@@ -137,6 +137,18 @@ app.post('/api/firmado', function (req, res, next) {
     // });
 });
 
+app.post('/api/firmasemilla', function (req, res, next) {
+
+    proxy(req, res, next);
+    //En caso de que venga un archivo en multipart
+    // uploadf(req, res, function (err) {
+    //     if (err) {
+    //         return res.end("Error uploading file.");
+    //     }
+    //     proxy(req, res, next);
+    // });
+});
+
 
 app.post('/api/obtenertoken', function (req, res, next) {
     proxy(req, res, next);
